@@ -12,9 +12,9 @@ use tabled::Tabled;
 struct TableRow {
     date: String,
     time_of_day: String,
-    temperature: u64,
+    temp: u64,
     red_sox: String,
-    detailed_forecast: String,
+    forecast: String,
 }
 
 fn main() {
@@ -47,9 +47,9 @@ fn main() {
         let row = TableRow {
             date: date.to_string(),
             time_of_day: item.name.clone(),
-            temperature: item.temperature,
+            temp: item.temperature,
             red_sox: sox_status,
-            detailed_forecast: item.detailed_forecast.clone(),
+            forecast: item.detailed_forecast.clone(),
         };
         table_rows.push(row);
     }
