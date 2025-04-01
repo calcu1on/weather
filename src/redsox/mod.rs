@@ -3,9 +3,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Game {
-    date: String,
-    start_time: String,
-    opponent: String,
+    pub date: String,
+    pub start_time: String,
+    pub opponent: String,
 }
 
 pub fn get_upcoming_games() -> Vec<Game> {

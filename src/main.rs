@@ -4,10 +4,14 @@ use tabled::Table;
 use tabled::settings::{
     peaker::Priority, Width, Style, Alignment, object::Columns
 };
+use serde::{Deserialize, Serialize};
+use tabled::Tabled;
 
+#[derive(Serialize, Deserialize, Debug, Tabled)]
+#[tabled(rename_all = "UPPERCASE")]
 struct TableRow {
     date: String,
-    name: String,
+    time_of_day: String,
     temperature: u64,
     red_sox: String,
     detailed_forecast: String,
@@ -27,14 +31,29 @@ fn main() {
     // turn this from a weather app to "morning-coffee" or "daily download" 
     // or something like this....maybe use AI to come up with a name.
     let entire_forecast: Vec<weather::WeatherPeriod> = weather::get_full_forecast(location);
-    // let sox_games: Vec<redsox::Game> = redsox::get_upcoming_games();
+    let sox_games: Vec<redsox::Game> = redsox::get_upcoming_games();
+    let mut table_rows: Vec<TableRow> = vec![];
     for i in 0..entire_forecast.len() {
-        let date = &entire_forecast[i].start_time[0..10];
-        println!("{}", date);
+        let item = &entire_forecast[i];
+        let date = &item.start_time[0..10];
+        let mut sox_status = String::new();
+        // Check if there is a sox game and print opp.
+        for sox_game in &sox_games {
+            if sox_game.date == date {
+                sox_status = sox_game.opponent.clone(); 
+                break;
+            }
+        }
+        let row = TableRow {
+            date: date.to_string(),
+            time_of_day: item.name.clone(),
+            temperature: item.temperature,
+            red_sox: sox_status,
+            detailed_forecast: item.detailed_forecast.clone(),
+        };
+        table_rows.push(row);
     }
-    // iterate over the entire forecast and move into table rows
-    // panic!("exit");
-    let mut table = Table::new(entire_forecast);
+    let mut table = Table::new(table_rows);
     table.with(Style::modern());
     table.with((
         Width::wrap(210).priority(Priority::max(true)),

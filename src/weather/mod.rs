@@ -1,7 +1,6 @@
 use reqwest::header::USER_AGENT;
 use serde::{Deserialize, Serialize};
 use serde_alias::serde_alias;
-use tabled::Tabled;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ForecastWrapper {
@@ -14,8 +13,7 @@ struct Properties {
 }
 
 #[serde_alias(CamelCase,SnakeCase)]
-#[derive(Serialize, Deserialize, Debug, Tabled)]
-#[tabled(rename_all = "UPPERCASE")]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct WeatherPeriod {
     pub name: String,
     pub temperature: u64,
