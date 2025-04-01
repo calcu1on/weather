@@ -7,6 +7,7 @@ use tabled::Tabled;
 pub struct ForecastWrapper {
     properties: Properties,
 }
+
 #[derive(Debug, Serialize, Deserialize)]
 struct Properties {
     periods: Vec<WeatherPeriod>,
@@ -21,6 +22,7 @@ pub struct WeatherPeriod {
     pub wind_direction: String,
     pub wind_speed: String,
     pub detailed_forecast: String,
+    pub start_time: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
